@@ -1,0 +1,268 @@
+/*
+ * Design tokens.
+ *
+ * Spacing, motion and depth values follow the ui-ux-pro-max "3D & Hyperrealism"
+ * profile: --perspective 1000px, 3–5 parallax layers, 300–400ms transitions.
+ * Colours are semantic only — no component in this kit should contain a raw hex.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* Depth */
+  --perspective: 1000px;
+  --parallax-layers: 4;
+  --shadow-depth: 24%;
+
+  /* Motion — 3D transitions sit at the slow end so spatial changes read as
+     movement through space rather than a cut. */
+  --motion-fast: 180ms;
+  --motion-base: 320ms;
+  --motion-slow: 400ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  /* Type */
+  --text-base: 1rem;
+  --line-height: 1.5;
+  --measure: 65ch;
+
+  /* Colour — light */
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text: #0f172a;         /* 16.1:1 on --color-background */
+  --color-text-muted: #475569;   /*  7.5:1 on --color-background */
+  --color-primary: #1d4ed8;      /*  6.9:1 against white text     */
+  --color-on-primary: #ffffff;
+  --color-accent: #c2410c;       /*  4.8:1 against white text     */
+  --color-on-accent: #ffffff;
+  --color-border: #cbd5e1;
+  --color-focus: #1d4ed8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0b1120;
+    --color-surface: #131c31;
+    --color-text: #e8eefc;        /* 14.9:1 on --color-background */
+    --color-text-muted: #a3b1cc;  /*  7.4:1 on --color-background */
+    --color-primary: #7aa2ff;     /* light-on-dark: used as text/border, not fill */
+    --color-on-primary: #08122b;
+    --color-accent: #ff9f6b;
+    --color-on-accent: #2a1004;
+    --color-border: #2a3855;
+    --color-focus: #7aa2ff;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Never disable zoom, and never set a fixed px root size — both break the
+     visitor's own text-size preference. */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: var(--text-base);
+  line-height: var(--line-height);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible focus on every interactive element. Removing this is the single most
+   common accessibility regression in agency work. */
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-sm);
+  top: -100%;
+  z-index: 100;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: 6px;
+  transition: top var(--motion-fast) var(--ease-out);
+}
+.skip-link:focus {
+  top: var(--space-sm);
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: var(--space-2xl) var(--space-md);
+  overflow: hidden;
+  perspective: var(--perspective);
+}
+
+.hero__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* The no-WebGL / reduced-motion counterpart. Layered gradients give the same
+   sense of depth as the particle field at zero GPU cost. */
+.hero__backdrop-static {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 20% 20%, color-mix(in oklab, var(--color-primary) 28%, transparent), transparent 70%),
+    radial-gradient(50% 45% at 80% 30%, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 70%),
+    radial-gradient(70% 60% at 50% 90%, color-mix(in oklab, var(--color-primary) 16%, transparent), transparent 75%);
+}
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  max-width: var(--measure);
+  text-align: center;
+}
+
+.hero__eyebrow {
+  margin: 0 0 var(--space-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.hero__title {
+  margin: 0 0 var(--space-md);
+  /* Fluid, but bounded — never below 2rem, never wider than the measure. */
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.hero__subtitle {
+  margin: 0 auto var(--space-lg);
+  max-width: 55ch;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--color-text-muted);
+  text-wrap: pretty;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: center;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  /* 44px minimum touch target, with ≥8px separation supplied by the gap above. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 var(--space-md);
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform var(--motion-fast) var(--ease-out),
+    background-color var(--motion-fast) var(--ease-out);
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.btn--secondary {
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(0);
+}
+
+/* ---------- Content ---------- */
+
+.section {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: var(--space-2xl) var(--space-md);
+}
+
+.section__title {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  margin-bottom: var(--space-lg);
+  text-wrap: balance;
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+}
+
+.card {
+  padding: var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.card p {
+  color: var(--color-text-muted);
+  margin-bottom: 0;
+}
+
+/*
+ * Reduced motion.
+ *
+ * The 3D scene is already gated in JS — this is the CSS half, and it is a hard
+ * stop rather than a slowdown. Anything that would animate is reduced to a
+ * single frame.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .btn:hover {
+    transform: none;
+  }
+}
