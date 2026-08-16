@@ -1,0 +1,353 @@
+<title>Trioz Steel</title>
+<style>
+@font-face{font-family:'Archivo';src:url(data:font/woff2;base64,__ARCHIVO700__) format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'PlexSans';src:url(data:font/woff2;base64,__PLEX400__) format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'PlexSans';src:url(data:font/woff2;base64,__PLEX600__) format('woff2');font-weight:600;font-style:normal;font-display:swap}
+
+/*
+  Single visual world by choice: a steel workshop after hours. Product
+  visualisation needs a controlled dark ground — the metal stops reading against
+  a light one. Every colour is painted explicitly so the page never borrows the
+  host's theme.
+*/
+:root{
+  --ink:#0A0908;
+  --steel:#16130F;
+  --steel-2:#1F1B16;
+  --edge:#332E27;
+  --brass:#A16207;
+  --brass-lit:#D4A03C;
+  --chalk:#EDE9E3;
+  --chalk-dim:#9A938A;
+
+  --measure:60ch;
+  --space-1:.5rem; --space-2:1rem; --space-3:1.75rem;
+  --space-4:3rem; --space-5:5rem; --space-6:8rem;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--chalk);
+  font-family:'PlexSans',ui-sans-serif,system-ui,sans-serif;
+  font-size:1.0625rem;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:'Archivo',ui-sans-serif,system-ui,sans-serif;font-weight:700;line-height:1.04;letter-spacing:-.022em;text-wrap:balance;margin:0}
+p{margin:0;text-wrap:pretty}
+a{color:inherit}
+
+:focus-visible{outline:2px solid var(--brass-lit);outline-offset:4px;border-radius:2px}
+
+.eyebrow{
+  font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--brass-lit);
+}
+
+.wrap{max-width:76rem;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3rem)}
+
+/* ---- nav ---- */
+.nav{
+  position:sticky;top:0;z-index:20;
+  background:color-mix(in oklab,var(--ink) 88%,transparent);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--edge);
+}
+.nav__in{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2);
+  min-height:64px}
+.brand{font-family:'Archivo';font-weight:700;font-size:1.05rem;letter-spacing:.14em;
+  text-transform:uppercase;text-decoration:none}
+.brand span{color:var(--brass-lit)}
+
+/* ---- buttons ---- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  min-height:48px;padding:0 1.4rem;
+  font-family:'PlexSans';font-weight:600;font-size:.95rem;
+  text-decoration:none;cursor:pointer;border:1px solid transparent;
+  transition:background-color .22s var(--ease),border-color .22s var(--ease),color .22s var(--ease);
+}
+.btn--solid{background:var(--brass);color:#120C02}
+.btn--solid:hover{background:var(--brass-lit)}
+.btn--ghost{border-color:var(--edge);color:var(--chalk)}
+.btn--ghost:hover{border-color:var(--brass-lit);color:var(--brass-lit)}
+
+/* ---- hero ---- */
+.hero{position:relative;border-bottom:1px solid var(--edge)}
+.hero__in{
+  display:grid;gap:var(--space-4);
+  grid-template-columns:1fr;
+  padding-block:var(--space-5) var(--space-5);
+  align-items:center;
+}
+@media(min-width:900px){
+  .hero__in{grid-template-columns:1.02fr .98fr;gap:var(--space-4);
+    min-height:min(88svh,860px);padding-block:var(--space-4)}
+}
+.hero__title{font-size:clamp(2.6rem,6.4vw,4.9rem);margin-block:1.1rem 1.4rem}
+.hero__lede{max-width:46ch;color:var(--chalk-dim);font-size:clamp(1rem,1.6vw,1.18rem)}
+.hero__actions{display:flex;flex-wrap:wrap;gap:var(--space-1);margin-top:var(--space-3)}
+
+/* the canvas frame — a lit alcove the object sits in */
+.stage{
+  position:relative;
+  aspect-ratio:4/5;
+  width:100%;
+  border:1px solid var(--edge);
+  background:
+    radial-gradient(66% 50% at 62% 28%, #262019 0%, transparent 66%),
+    radial-gradient(50% 40% at 22% 82%, #1a2029 0%, transparent 70%),
+    var(--steel);
+  overflow:hidden;
+}
+@media(min-width:900px){.stage{aspect-ratio:auto;height:min(74svh,720px)}}
+.stage canvas{display:block;width:100%;height:100%}
+/* corner ticks — drafting registration marks, not decoration for its own sake */
+.stage::before,.stage::after{
+  content:"";position:absolute;width:18px;height:18px;border:1px solid var(--brass);
+  opacity:.5;pointer-events:none;
+}
+.stage::before{top:12px;left:12px;border-right:0;border-bottom:0}
+.stage::after{bottom:12px;right:12px;border-left:0;border-top:0}
+
+[hidden]{display:none!important}
+.stage__fallback{
+  position:absolute;inset:0;display:grid;place-items:center;padding:2rem;
+  text-align:center;color:var(--chalk-dim);font-size:.92rem;
+}
+.stage__caption{
+  position:absolute;left:14px;bottom:12px;z-index:2;
+  font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--chalk-dim);
+}
+
+/* ---- chapters ---- */
+.chapter{border-bottom:1px solid var(--edge);padding-block:var(--space-5)}
+.chapter__grid{display:grid;gap:var(--space-3);grid-template-columns:1fr}
+@media(min-width:820px){.chapter__grid{grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:var(--space-4)}}
+.chapter__title{font-size:clamp(1.75rem,3.4vw,2.7rem);margin-block:.7rem 0}
+.chapter__body{max-width:var(--measure);color:var(--chalk-dim);display:grid;gap:var(--space-2)}
+.chapter__body strong{color:var(--chalk);font-weight:600}
+
+/* ---- spec table ---- */
+.specs{width:100%;border-collapse:collapse;margin-top:var(--space-3);
+  font-variant-numeric:tabular-nums;font-size:.95rem}
+.specs caption{text-align:left;color:var(--chalk-dim);font-size:.78rem;
+  letter-spacing:.14em;text-transform:uppercase;padding-bottom:.7rem}
+.specs th,.specs td{text-align:left;padding:.72rem 0;border-bottom:1px solid var(--edge)}
+.specs th{font-weight:600;color:var(--chalk-dim);font-size:.82rem;
+  letter-spacing:.1em;text-transform:uppercase}
+.specs td:last-child{color:var(--chalk);text-align:right}
+.specs-scroll{overflow-x:auto}
+
+/* ---- range grid ---- */
+.range{display:grid;gap:1px;background:var(--edge);
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));
+  margin-top:var(--space-3);border:1px solid var(--edge)}
+.range__item{background:var(--steel);padding:var(--space-3);display:grid;gap:.6rem;
+  align-content:start;transition:background-color .3s var(--ease)}
+.range__item:hover{background:var(--steel-2)}
+.range__item h3{font-size:1.12rem;letter-spacing:-.01em}
+.range__item p{color:var(--chalk-dim);font-size:.94rem}
+.range__no{font-size:.7rem;letter-spacing:.18em;color:var(--brass-lit);font-weight:600}
+
+/* ---- cta ---- */
+.cta{padding-block:var(--space-6);text-align:center}
+.cta h2{font-size:clamp(2rem,4.6vw,3.4rem)}
+.cta p{max-width:48ch;margin:1.1rem auto 0;color:var(--chalk-dim)}
+.cta__actions{display:flex;gap:var(--space-1);justify-content:center;flex-wrap:wrap;
+  margin-top:var(--space-3)}
+
+footer{border-top:1px solid var(--edge);padding-block:var(--space-3);
+  color:var(--chalk-dim);font-size:.82rem}
+.note{border:1px solid var(--edge);border-left:2px solid var(--brass);
+  padding:.9rem 1.1rem;margin-top:var(--space-3);font-size:.84rem;color:var(--chalk-dim)}
+
+/* ---- reveal ---- */
+.rv{opacity:0;transform:translateY(18px);
+  transition:opacity .42s var(--ease),transform .42s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .rv{opacity:1;transform:none}
+}
+</style>
+
+<nav class="nav">
+  <div class="wrap nav__in">
+    <a class="brand" href="#top">TRI<span>O</span>Z</a>
+    <a class="btn btn--ghost" href="#enquire">Request a quote</a>
+  </div>
+</nav>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero__in">
+      <div>
+        <p class="eyebrow">Steel windows &amp; doors — Kerala</p>
+        <h1 class="hero__title">Built for the coast that tests everything.</h1>
+        <p class="hero__lede">
+          Slim steel sections in TATA Steel, galvanised and powder-coated for monsoon
+          humidity and salt air. The sightline of a heritage casement, with the
+          tolerances of a modern fabrication shop.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--solid" href="#enquire">Request a quote</a>
+          <a class="btn btn--ghost" href="#range">See the range</a>
+        </div>
+      </div>
+
+      <div class="stage" id="stage">
+        <canvas id="scene" aria-hidden="true"></canvas>
+        <div class="stage__fallback" id="fallback" hidden>
+          <p>Casement, mullion and transom in galvanised steel with a brass lever.</p>
+        </div>
+        <p class="stage__caption">Casement — mullion &amp; transom</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="wrap chapter__grid">
+      <div><p class="eyebrow">The problem</p></div>
+      <div>
+        <h2 class="chapter__title">Salt air finds every weakness.</h2>
+        <div class="chapter__body">
+          <p>
+            Coastal Kerala runs humid most of the year, and the monsoon drives rain
+            sideways into every joint a window has. Timber swells, then shrinks, and
+            stops closing square. Thin aluminium pits where the coating breaks.
+          </p>
+          <p>
+            <strong>The failure is rarely the glass — it is the frame.</strong> What
+            survives is a section stiff enough not to move, protected before it is
+            painted rather than after.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="wrap chapter__grid">
+      <div><p class="eyebrow">The material</p></div>
+      <div>
+        <h2 class="chapter__title">Steel, because the section can be thin.</h2>
+        <div class="chapter__body">
+          <p>
+            Steel carries a span at a fraction of the width aluminium or uPVC needs.
+            That is the whole argument: <strong>more glass, less frame</strong>, and a
+            sightline that suits both a heritage restoration and a flat modern opening.
+          </p>
+          <p>
+            Every section is galvanised before finishing, so the protection sits under
+            the powder coat instead of on top of it.
+          </p>
+        </div>
+        <div class="specs-scroll">
+          <table class="specs">
+            <caption>Indicative specification</caption>
+            <tbody>
+              <tr><th scope="row">Section material</th><td>TATA Steel</td></tr>
+              <tr><th scope="row">Corrosion protection</th><td>Hot-dip galvanised</td></tr>
+              <tr><th scope="row">Finish</th><td>Powder coat, matt or satin</td></tr>
+              <tr><th scope="row">Glazing</th><td>Single or double, toughened</td></tr>
+              <tr><th scope="row">Hardware</th><td>Brass or stainless lever</td></tr>
+              <tr><th scope="row">Openings</th><td>Casement, pivot, fixed light</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="range">
+    <div class="wrap chapter__grid">
+      <div><p class="eyebrow">The range</p></div>
+      <div>
+        <h2 class="chapter__title">Four ways it gets specified.</h2>
+        <div class="chapter__body">
+          <p>Most projects land in one of these, and they mix on the same elevation.</p>
+        </div>
+        <div class="range">
+          <article class="range__item rv"><p class="range__no">01</p><h3>Casement windows</h3><p>Side-hung on a steel frame, with a mullion where the opening needs dividing.</p></article>
+          <article class="range__item rv"><p class="range__no">02</p><h3>Pivot &amp; top-hung</h3><p>For ventilation high in a wall, or where a side-hung leaf would foul a walkway.</p></article>
+          <article class="range__item rv"><p class="range__no">03</p><h3>Doors &amp; screens</h3><p>Single and double leaf, with fixed side lights carrying the same sightline.</p></article>
+          <article class="range__item rv"><p class="range__no">04</p><h3>Fixed lights</h3><p>Large panes where the opening is for daylight rather than air.</p></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta wrap" id="enquire">
+    <h2>Send us the opening.</h2>
+    <p>
+      A dimensioned sketch or a photograph with a measurement is enough to start.
+      We come back with a section drawing and a price.
+    </p>
+    <div class="cta__actions">
+      <a class="btn btn--solid" href="mailto:hello@triozsteel.com">Request a quote</a>
+      <a class="btn btn--ghost" href="tel:+910000000000">Call the workshop</a>
+    </div>
+    <p class="note">
+      Design preview. Copy and specification values are placeholders for client
+      review — confirm section sizes, finishes and contact details before publishing.
+    </p>
+  </section>
+</main>
+
+<footer class="wrap">Trioz — steel windows and doors, Kerala.</footer>
+
+<script>__SCENE_BUNDLE__</script>
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Scroll reveal — the skill's Stagger List preset, 420ms with an eased
+     overshoot, done with IntersectionObserver rather than a animation library. */
+  var items = document.querySelectorAll('.rv');
+  if (reduced) {
+    items.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry, i) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        setTimeout(function () { el.classList.add('in'); }, i * 60);
+        io.unobserve(el);
+      });
+    }, { threshold: 0.15 });
+    items.forEach(function (el) { io.observe(el); });
+  }
+
+  /* Device tiering, same rule as the starter kit: coarse pointer or narrow
+     viewport means a phone, and a phone does not get the desktop budget. */
+  function tier() {
+    var cores = navigator.hardwareConcurrency || 2;
+    var coarse = window.matchMedia('(pointer: coarse)').matches
+      || window.matchMedia('(max-width: 768px)').matches;
+    if (coarse) return cores >= 8 ? 'mid' : 'low';
+    return cores >= 8 ? 'high' : 'mid';
+  }
+
+  var canvas = document.getElementById('scene');
+  var fallback = document.getElementById('fallback');
+
+  if (!window.TriozScene || !window.TriozScene.supportsWebGL()) {
+    canvas.hidden = true;
+    fallback.hidden = false;
+    return;
+  }
+  try {
+    window.TriozScene.mountScene(canvas, { reducedMotion: reduced, tier: tier() });
+  } catch (err) {
+    canvas.hidden = true;
+    fallback.hidden = false;
+  }
+})();
+</script>
