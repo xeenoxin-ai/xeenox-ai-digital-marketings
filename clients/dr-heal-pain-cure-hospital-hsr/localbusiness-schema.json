@@ -1,0 +1,48 @@
+{
+  "_comment": "Fill every bracketed [PLACEHOLDER] with the confirmed, exact value from the live GBP listing/website before publishing. Remove this _comment key before pasting into <script type=\"application/ld+json\">. Validate at https://validator.schema.org/ after filling in.",
+  "@context": "https://schema.org",
+  "@type": "Hospital",
+  "name": "Dr Heal Pain Cure Hospital",
+  "alternateName": "Dr Heal Multispeciality Hospitals",
+  "image": "[URL to a real exterior/signage photo]",
+  "url": "[confirmed live website URL]",
+  "telephone": "[confirmed phone number, e.g. +91-XXXXXXXXXX]",
+  "email": "[confirmed contact email]",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Ganapa Arcade, No. 392, 9th Main Rd, 7th Sector",
+    "addressLocality": "HSR Layout, Bengaluru",
+    "addressRegion": "Karnataka",
+    "postalCode": "560102",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "[confirmed latitude from GBP]",
+    "longitude": "[confirmed longitude from GBP]"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "[confirmed opening time]",
+      "closes": "[confirmed closing time]"
+    }
+  ],
+  "medicalSpecialty": [
+    "Orthopedic",
+    "PainManagement",
+    "PhysicalTherapy"
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Dr. Rakesh H. Jayaprakash"
+  },
+  "sameAs": [
+    "[GBP listing URL]",
+    "[Facebook page URL]",
+    "[Practo profile URL]",
+    "[Justdial profile URL]"
+  ]
+}
